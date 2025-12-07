@@ -1,0 +1,318 @@
+// This is your Prisma schema file
+// WingWill SaaS Platform Database Schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ========================================
+// User & Authentication
+// ========================================
+
+model User {
+  id            String    @id @default(cuid())
+  email         String    @unique
+  name          String?
+  password      String?
+  role          Role      @default(CUSTOMER)
+  emailVerified DateTime?
+  image         String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  accounts      Account[]
+  sessions      Session[]
+  organizations OrganizationMember[]
+  orders        Order[]               @relation("UserOrders")
+  createdOrders Order[]               @relation("CreatedBy")
+  orderReviews  OrderReview[]
+
+  @@map("users")
+}
+
+enum Role {
+  CUSTOMER
+  YUSHENG_ADMIN
+  YUSHENG_SALES
+  YUSHENG_TECH
+  YUSHENG_FINANCE
+  VENDOR_ADMIN
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+  @@map("accounts")
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("sessions")
+}
+
+// ========================================
+// Organization
+// ========================================
+
+model Organization {
+  id           String   @id @default(cuid())
+  taxId        String   @unique
+  name         String
+  address      String?
+  phone        String?
+  contactName  String?
+  contactEmail String?
+  isActive     Boolean  @default(true)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  members       OrganizationMember[]
+  orders        Order[]
+  subscriptions Subscription[]
+
+  @@map("organizations")
+}
+
+model OrganizationMember {
+  id             String   @id @default(cuid())
+  organizationId String
+  userId         String
+  isPrimary      Boolean  @default(false)
+  joinedAt       DateTime @default(now())
+
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  user         User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([organizationId, userId])
+  @@map("organization_members")
+}
+
+// ========================================
+// Product Management
+// ========================================
+
+model Brand {
+  id        String   @id @default(cuid())
+  name      String   @unique
+  slug      String   @unique
+  logo      String?
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  products  Product[]
+
+  @@map("brands")
+}
+
+model Product {
+  id        String   @id @default(cuid())
+  brandId   String
+  name      String
+  slug      String   @unique
+  sku       String   @unique
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+
+  brand Brand @relation(fields: [brandId], references: [id])
+  plans Plan[]
+
+  @@map("products")
+}
+
+model Plan {
+  id        String   @id @default(cuid())
+  productId String
+  name      String
+  slug      String   @unique
+  sku       String   @unique
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+
+  product       Product         @relation(fields: [productId], references: [id])
+  pricing       PlanPricing[]
+  orderItems    OrderItem[]
+  subscriptions Subscription[]
+
+  @@map("plans")
+}
+
+model PlanPricing {
+  id        String    @id @default(cuid())
+  planId    String
+  price     Decimal   @db.Decimal(10, 2)
+  currency  String    @default("TWD")
+  startDate DateTime
+  endDate   DateTime?
+  createdAt DateTime  @default(now())
+
+  plan Plan @relation(fields: [planId], references: [id], onDelete: Cascade)
+
+  @@index([planId, startDate])
+  @@map("plan_pricing")
+}
+
+// ========================================
+// Order Management
+// ========================================
+
+model Order {
+  id             String      @id @default(cuid())
+  orderNumber    String      @unique
+  organizationId String?
+  userId         String
+  createdById    String?
+  status         OrderStatus @default(PENDING_SALES)
+  totalAmount    Decimal     @db.Decimal(10, 2)
+  currency       String      @default("TWD")
+  notes          String?     @db.Text
+  createdAt      DateTime    @default(now())
+  updatedAt      DateTime    @updatedAt
+
+  organization Organization? @relation(fields: [organizationId], references: [id])
+  user         User          @relation("UserOrders", fields: [userId], references: [id])
+  createdBy    User?         @relation("CreatedBy", fields: [createdById], references: [id])
+  items        OrderItem[]
+  reviews      OrderReview[]
+  payment      Payment?
+
+  @@index([status, createdAt])
+  @@map("orders")
+}
+
+enum OrderStatus {
+  PENDING_SALES
+  PENDING_TECH
+  PENDING_PAYMENT
+  PROCESSING
+  COMPLETED
+  CANCELLED
+  REJECTED
+}
+
+model OrderItem {
+  id         String   @id @default(cuid())
+  orderId    String
+  planId     String
+  quantity   Int      @default(1)
+  unitPrice  Decimal  @db.Decimal(10, 2)
+  subtotal   Decimal  @db.Decimal(10, 2)
+  domain     String?
+  adminEmail String?
+  createdAt  DateTime @default(now())
+
+  order Order @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  plan  Plan  @relation(fields: [planId], references: [id])
+
+  @@map("order_items")
+}
+
+model OrderReview {
+  id         String       @id @default(cuid())
+  orderId    String
+  reviewerId String
+  status     ReviewStatus
+  comments   String?      @db.Text
+  reviewedAt DateTime     @default(now())
+
+  order    Order @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  reviewer User  @relation(fields: [reviewerId], references: [id])
+
+  @@map("order_reviews")
+}
+
+enum ReviewStatus {
+  APPROVED
+  REJECTED
+}
+
+// ========================================
+// Payment
+// ========================================
+
+model Payment {
+  id            String        @id @default(cuid())
+  orderId       String        @unique
+  amount        Decimal       @db.Decimal(10, 2)
+  currency      String        @default("TWD")
+  method        PaymentMethod
+  status        PaymentStatus @default(PENDING)
+  transactionId String?
+  paidAt        DateTime?
+  createdAt     DateTime      @default(now())
+
+  order Order @relation(fields: [orderId], references: [id])
+
+  @@map("payments")
+}
+
+enum PaymentMethod {
+  CREDIT_CARD
+  BANK_TRANSFER
+  MANUAL
+}
+
+enum PaymentStatus {
+  PENDING
+  PAID
+  FAILED
+  REFUNDED
+}
+
+// ========================================
+// Subscription
+// ========================================
+
+model Subscription {
+  id             String             @id @default(cuid())
+  organizationId String
+  planId         String
+  productType    SubscriptionType
+  domain         String?
+  adminEmail     String?
+  quantity       Int                @default(1)
+  startDate      DateTime
+  endDate        DateTime?
+  status         SubscriptionStatus @default(ACTIVE)
+  createdAt      DateTime           @default(now())
+
+  organization Organization @relation(fields: [organizationId], references: [id])
+  plan         Plan         @relation(fields: [planId], references: [id])
+
+  @@index([status, endDate])
+  @@map("subscriptions")
+}
+
+enum SubscriptionType {
+  GWS
+  GCP
+  AKAMAI
+}
+
+enum SubscriptionStatus {
+  ACTIVE
+  SUSPENDED
+  CANCELLED
+  EXPIRED
+}
