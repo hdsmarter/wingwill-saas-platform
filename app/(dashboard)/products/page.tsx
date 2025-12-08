@@ -269,7 +269,7 @@ export default function ProductsPage() {
                                       <span className="text-xs text-gray-600">USD / 用戶 / 月</span>
                                     </div>
                                   ) : (
-                                    <p className="text-xs text-gray-600 italic">{plan.note}</p>
+                                    <p className="text-xs text-gray-600 italic">{'note' in plan ? plan.note : '依使用量計費'}</p>
                                   )}
                                 </div>
 
