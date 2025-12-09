@@ -92,10 +92,10 @@ export default function DashboardPage() {
                     </div>
                   )}
                 </div>
-                <p className="text-xs font-medium text-gray-500 uppercase mb-1">
+                <p className="text-[11px] font-bold text-gray-500 uppercase tracking-wide mb-2">
                   {stat.label}
                 </p>
-                <h3 className="text-2xl font-semibold text-gray-900">{stat.value}</h3>
+                <h3 className="text-2xl font-normal text-gray-900">{stat.value}</h3>
               </CardContent>
             </Card>
           ))}
@@ -112,13 +112,13 @@ export default function DashboardPage() {
               </Link>
             </div>
             <div className="overflow-auto">
-              <table className="w-full text-left">
-                <thead className="bg-gray-50 sticky top-0">
-                  <tr>
-                    <th className="p-3 text-xs font-semibold text-gray-600 border-b border-gray-200">訂單編號</th>
-                    <th className="p-3 text-xs font-semibold text-gray-600 border-b border-gray-200">客戶</th>
-                    <th className="p-3 text-xs font-semibold text-gray-600 border-b border-gray-200 text-right">金額</th>
-                    <th className="p-3 text-xs font-semibold text-gray-600 border-b border-gray-200">狀態</th>
+              <table className="w-full text-left border-collapse">
+                <thead className="bg-gray-50 border-b border-gray-200 sticky top-0">
+                  <tr className="text-xs text-gray-500 uppercase tracking-wider">
+                    <th className="py-2 px-4 font-semibold">訂單編號</th>
+                    <th className="py-2 px-4 font-semibold">客戶</th>
+                    <th className="py-2 px-4 font-semibold text-right">金額</th>
+                    <th className="py-2 px-4 font-semibold">狀態</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-100">
@@ -130,10 +130,10 @@ export default function DashboardPage() {
                     { id: 'ORD-2024-0005', customer: 'GHI 有限公司', amount: 'NT$ 8,900', status: 'processing', statusLabel: '處理中' },
                   ].map((order) => (
                     <tr key={order.id} className="hover:bg-blue-50/30 transition-colors cursor-pointer">
-                      <td className="p-3 font-medium text-sm text-blue-600 hover:underline">{order.id}</td>
-                      <td className="p-3 text-sm text-gray-900">{order.customer}</td>
-                      <td className="p-3 text-sm text-gray-900 text-right font-mono">{order.amount}</td>
-                      <td className="p-3">
+                      <td className="py-2 px-4 font-medium text-sm text-blue-600 hover:underline">{order.id}</td>
+                      <td className="py-2 px-4 text-sm text-gray-900">{order.customer}</td>
+                      <td className="py-2 px-4 text-sm text-gray-900 text-right font-mono">{order.amount}</td>
+                      <td className="py-2 px-4">
                         <span className={`inline-flex items-center px-2 py-0.5 rounded text-[10px] font-medium ${
                           order.status === 'completed' ? 'bg-green-50 text-green-700 border border-green-200' :
                           order.status === 'processing' ? 'bg-blue-50 text-blue-700 border border-blue-200' :
@@ -156,7 +156,7 @@ export default function DashboardPage() {
               <div className="px-4 py-3 border-b border-gray-100 bg-gray-50/50">
                 <h3 className="text-sm font-semibold text-gray-800">快速操作</h3>
               </div>
-              <div className="p-3 space-y-1">
+              <div className="p-4 space-y-1">
                 {[
                   { label: '建立新訂單', href: '/orders', icon: 'plus' },
                   { label: '新增客戶', href: '/customers', icon: 'user' },
@@ -164,7 +164,7 @@ export default function DashboardPage() {
                   { label: '系統設定', href: '/settings', icon: 'cog' },
                 ].map((action, index) => (
                   <Link key={index} href={action.href}>
-                    <button className="w-full flex items-center gap-2 px-3 py-2 text-sm text-gray-700 hover:bg-gray-50 rounded-sm transition-colors text-left">
+                    <button className="w-full flex items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 rounded-sm transition-colors text-left">
                       <span className="text-gray-500">{getIcon(action.icon, "w-4 h-4")}</span>
                       <span>{action.label}</span>
                     </button>
@@ -178,9 +178,9 @@ export default function DashboardPage() {
               <div className="px-4 py-3 border-b border-gray-100 bg-gray-50/50">
                 <h3 className="text-sm font-semibold text-gray-800">系統通知</h3>
               </div>
-              <div className="p-3 space-y-3">
+              <div className="p-4 space-y-3">
                 {[1, 2, 3].map((i) => (
-                  <div key={i} className="flex items-start gap-3 p-2 hover:bg-gray-50 rounded-sm transition-colors cursor-pointer">
+                  <div key={i} className="flex items-start gap-3 py-2 px-3 hover:bg-gray-50 rounded-sm transition-colors cursor-pointer">
                     <div className="w-2 h-2 mt-1.5 rounded-full bg-blue-500 flex-shrink-0" />
                     <div>
                       <p className="text-xs font-medium text-gray-900">系統更新通知 v2.4.{i}</p>

@@ -218,18 +218,18 @@ export default function OrdersPage() {
             {/* Table */}
             <div className="overflow-auto">
               <table className="w-full text-left border-collapse">
-                <thead className="bg-gray-50 sticky top-0 z-10">
-                  <tr>
-                    <th className="p-3 text-xs font-semibold text-gray-600 border-b border-gray-200 w-8">
+                <thead className="bg-gray-50 border-b border-gray-200 sticky top-0 z-10">
+                  <tr className="text-xs text-gray-500 uppercase tracking-wider">
+                    <th className="py-2 px-4 font-semibold w-8">
                       <input type="checkbox" className="rounded-sm border-gray-300 w-3 h-3" />
                     </th>
-                    <th className="p-3 text-xs font-semibold text-gray-600 border-b border-gray-200">訂單編號</th>
-                    <th className="p-3 text-xs font-semibold text-gray-600 border-b border-gray-200">客戶</th>
-                    <th className="p-3 text-xs font-semibold text-gray-600 border-b border-gray-200">產品</th>
-                    <th className="p-3 text-xs font-semibold text-gray-600 border-b border-gray-200 text-right">金額</th>
-                    <th className="p-3 text-xs font-semibold text-gray-600 border-b border-gray-200">狀態</th>
-                    <th className="p-3 text-xs font-semibold text-gray-600 border-b border-gray-200">日期</th>
-                    <th className="p-3 text-xs font-semibold text-gray-600 border-b border-gray-200">操作</th>
+                    <th className="py-2 px-4 font-semibold">訂單編號</th>
+                    <th className="py-2 px-4 font-semibold">客戶</th>
+                    <th className="py-2 px-4 font-semibold">產品</th>
+                    <th className="py-2 px-4 font-semibold text-right">金額</th>
+                    <th className="py-2 px-4 font-semibold">狀態</th>
+                    <th className="py-2 px-4 font-semibold">日期</th>
+                    <th className="py-2 px-4 font-semibold">操作</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-100">
@@ -238,35 +238,35 @@ export default function OrdersPage() {
 
                     return (
                       <tr key={order.id} className="hover:bg-blue-50/30 transition-colors group">
-                        <td className="p-3">
+                        <td className="py-2 px-4">
                           <input type="checkbox" className="rounded-sm border-gray-300 w-3 h-3" />
                         </td>
-                        <td className="p-3">
+                        <td className="py-2 px-4">
                           <div className="text-sm font-medium text-blue-600 cursor-pointer hover:underline">{order.orderNumber}</div>
                         </td>
-                        <td className="p-3">
+                        <td className="py-2 px-4">
                           <div className="text-sm text-gray-900">{order.customer}</div>
                           <div className="text-xs text-gray-500">{order.customerEmail}</div>
                         </td>
-                        <td className="p-3">
+                        <td className="py-2 px-4">
                           <div className="text-sm text-gray-900 max-w-xs truncate">{order.product}</div>
                           <div className="text-xs text-gray-500">數量: {order.quantity}</div>
                         </td>
-                        <td className="p-3 text-right">
+                        <td className="py-2 px-4 text-right">
                           <div className="text-sm font-medium text-gray-900">
                             ${order.totalAmount.toLocaleString()}
                           </div>
                           <div className="text-xs text-gray-500">{order.currency}</div>
                         </td>
-                        <td className="p-3">
+                        <td className="py-2 px-4">
                           <span className={`inline-flex items-center px-2 py-0.5 rounded text-[10px] font-medium border ${config.color}`}>
                             {config.label}
                           </span>
                         </td>
-                        <td className="p-3 text-sm text-gray-500">
+                        <td className="py-2 px-4 text-sm text-gray-500">
                           {order.createdAt}
                         </td>
-                        <td className="p-3">
+                        <td className="py-2 px-4">
                           <div className="flex items-center gap-2 text-xs">
                             <Link href={`/orders/${order.id}`} className="text-blue-600 hover:underline">
                               查看

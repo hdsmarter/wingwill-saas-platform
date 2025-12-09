@@ -194,7 +194,7 @@ export default function ProductsPage() {
               {/* Level 1: Brand - Compact */}
               <button
                 onClick={() => toggleBrand(brand.id)}
-                className="w-full px-4 py-3 flex items-center justify-between hover:bg-gray-50 transition-colors"
+                className="w-full px-6 py-4 flex items-center justify-between hover:bg-gray-50 transition-colors"
               >
                 <div className="flex items-center gap-3">
                   <div className="w-8 h-8 rounded-sm bg-gray-100 flex items-center justify-center text-lg">
@@ -225,7 +225,7 @@ export default function ProductsPage() {
                     <div key={product.id} className="border-b border-gray-200 last:border-0">
                       <button
                         onClick={() => toggleProduct(product.id)}
-                        className="w-full px-6 py-2.5 flex items-center justify-between hover:bg-white transition-colors"
+                        className="w-full px-6 py-3 flex items-center justify-between hover:bg-white transition-colors"
                       >
                         <div className="flex items-center gap-2.5">
                           <div className="w-1.5 h-1.5 rounded-full bg-blue-600"></div>
@@ -252,8 +252,8 @@ export default function ProductsPage() {
 
                       {/* Level 3: Plans - GCP Compact Cards */}
                       {expandedProducts.includes(product.id) && (
-                        <div className="px-6 pb-4 bg-white">
-                          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 pt-3">
+                        <div className="px-6 pb-6 bg-white">
+                          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 pt-4">
                             {product.plans.map((plan) => (
                               <div
                                 key={plan.id}
