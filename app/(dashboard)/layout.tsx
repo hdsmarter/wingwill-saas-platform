@@ -13,7 +13,7 @@ export default function DashboardLayout({
   const userRole = 'YUSHENG_ADMIN';
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
 
-  const sidebarWidth = isSidebarCollapsed ? '64px' : '256px';
+  const sidebarWidth = isSidebarCollapsed ? '64px' : '240px';
 
   return (
     <CartProvider>
