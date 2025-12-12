@@ -153,29 +153,29 @@ export default function DashboardPage() {
       </div>
 
       {/* Main Content */}
-      <div className="p-8">
+      <div className="p-10">
         {/* Stats Grid - Spacious Layout */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-10">
           {config.stats.map((stat, index) => {
             const colorClass = getColorClass(stat.color);
             return (
               <Card key={index} className="border border-gray-200 rounded-lg shadow-sm hover:shadow-md transition-all">
-                <CardContent className="p-6">
-                  <div className="flex justify-between items-start mb-4">
+                <CardContent className="p-8">
+                  <div className="flex justify-between items-start mb-6">
                     <div className="flex-1">
-                      <p className="text-sm font-medium text-gray-600 mb-3">
+                      <p className="text-sm font-medium text-gray-600 mb-4">
                         {stat.label} ({stat.labelEn})
                       </p>
-                      <h3 className="text-3xl font-semibold text-gray-900 mb-3">{stat.value}</h3>
-                      <div className={`text-sm flex items-center gap-1.5 ${stat.trendUp ? 'text-green-600' : 'text-red-600'}`}>
+                      <h3 className="text-4xl font-semibold text-gray-900 mb-4">{stat.value}</h3>
+                      <div className={`text-sm flex items-center gap-2 ${stat.trendUp ? 'text-green-600' : 'text-red-600'}`}>
                         <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={stat.trendUp ? "M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" : "M13 17h8m0 0V9m0 8l-8-8-4 4-6-6"} />
                         </svg>
                         <span className="font-medium">{stat.trend} {stat.trendLabel}</span>
                       </div>
                     </div>
-                    <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${colorClass.gradient} flex items-center justify-center shadow-md flex-shrink-0`}>
-                      {getIcon(stat.icon, "w-6 h-6 text-white")}
+                    <div className={`w-14 h-14 rounded-xl bg-gradient-to-br ${colorClass.gradient} flex items-center justify-center shadow-md flex-shrink-0 ml-4`}>
+                      {getIcon(stat.icon, "w-7 h-7 text-white")}
                     </div>
                   </div>
                 </CardContent>
@@ -185,17 +185,17 @@ export default function DashboardPage() {
         </div>
 
         {/* Content Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Revenue Trend Chart - 2/3 width */}
           <Card className="lg:col-span-2 border border-gray-200 rounded-lg shadow-sm">
-            <div className="px-6 py-4 border-b border-gray-200 flex justify-between items-center">
-              <h3 className="text-base font-semibold text-gray-900">營收趨勢分析</h3>
+            <div className="px-8 py-5 border-b border-gray-200 flex justify-between items-center">
+              <h3 className="text-lg font-semibold text-gray-900">營收趨勢分析</h3>
               <Link href="/reports" className="text-sm text-blue-600 hover:underline font-medium">
                 下載報表
               </Link>
             </div>
-            <div className="p-6">
-              <ResponsiveContainer width="100%" height={350}>
+            <div className="p-8">
+              <ResponsiveContainer width="100%" height={400}>
                 <LineChart data={revenueData}>
                   <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
                   <XAxis
@@ -231,24 +231,24 @@ export default function DashboardPage() {
           </Card>
 
           {/* Quick Actions & Notifications - 1/3 width */}
-          <div className="space-y-6">
+          <div className="space-y-8">
             {/* System Notifications */}
             <Card className="border border-gray-200 rounded-lg shadow-sm">
-              <div className="px-6 py-4 border-b border-gray-200">
-                <h3 className="text-base font-semibold text-gray-900">系統通知</h3>
+              <div className="px-8 py-5 border-b border-gray-200">
+                <h3 className="text-lg font-semibold text-gray-900">系統通知</h3>
               </div>
-              <div className="p-4 space-y-3">
+              <div className="p-6 space-y-4">
                 {[
                   { title: 'ERP 系統更新 v2.4.0 已完成', time: '2 小時前', source: '系統管理員' },
                   { title: 'ERP 系統更新 v2.4.0 已完成', time: '2 小時前', source: '系統管理員' },
                   { title: 'ERP 系統更新 v2.4.0 已完成', time: '2 小時前', source: '系統管理員' },
                   { title: 'ERP 系統更新 v2.4.0 已完成', time: '2 小時前', source: '系統管理員' },
                 ].map((notification, i) => (
-                  <div key={i} className="flex items-start gap-3 p-3 hover:bg-gray-50 rounded-lg transition-colors cursor-pointer">
+                  <div key={i} className="flex items-start gap-3 p-4 hover:bg-gray-50 rounded-lg transition-colors cursor-pointer">
                     <div className="w-2 h-2 mt-2 rounded-full bg-blue-500 flex-shrink-0" />
                     <div className="flex-1">
-                      <p className="text-sm font-medium text-gray-900 leading-relaxed">{notification.title}</p>
-                      <p className="text-xs text-gray-500 mt-1.5">
+                      <p className="text-sm font-medium text-gray-900 leading-relaxed mb-2">{notification.title}</p>
+                      <p className="text-xs text-gray-500">
                         {notification.time} ‧ {notification.source}
                       </p>
                     </div>
