@@ -194,13 +194,13 @@ export function Sidebar({
       </nav>
 
       {/* User Profile */}
-      <div className="border-t border-gray-200 p-3 flex-shrink-0">
+      <div className="border-t border-gray-200 p-4 flex-shrink-0">
         {isCollapsed ? (
           <button
             onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
             className="w-full flex justify-center relative group"
           >
-            <div className="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center text-gray-700 text-xs font-semibold hover:bg-gray-300 transition-colors">
+            <div className="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center text-blue-700 text-sm font-semibold hover:bg-blue-200 transition-colors">
               管
             </div>
             {/* User Menu for collapsed */}
@@ -226,13 +226,13 @@ export function Sidebar({
           <>
             <button
               onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
-              className="w-full flex items-center gap-2 p-2 rounded hover:bg-gray-100 transition-colors"
+              className="w-full flex items-center gap-3 p-3 rounded-lg hover:bg-gray-100 transition-colors"
             >
-              <div className="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center text-gray-700 text-xs font-semibold flex-shrink-0">
+              <div className="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center text-blue-700 text-sm font-semibold flex-shrink-0">
                 管
               </div>
               <div className="flex-1 min-w-0 text-left">
-                <p className="text-sm font-medium text-gray-900 truncate">管理員</p>
+                <p className="text-sm font-semibold text-gray-900 truncate">管理員</p>
                 <p className="text-xs text-gray-500 truncate">admin@wingwill.com</p>
               </div>
               <svg className={cn("w-4 h-4 text-gray-500 transition-transform flex-shrink-0", isUserMenuOpen && "rotate-180")} fill="none" stroke="currentColor" viewBox="0 0 24 24">
