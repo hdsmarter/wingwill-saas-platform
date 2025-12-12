@@ -113,10 +113,10 @@ export default function DashboardPage() {
   };
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-gray-50">
       {/* Header with Search and User Profile */}
       <div className="bg-white border-b border-gray-200">
-        <div className="px-6 py-3 flex items-center justify-between">
+        <div className="px-6 py-4 flex items-center justify-between">
           <div className="flex items-center gap-2 text-xs text-gray-500">
             <span>首頁</span>
             <span>/</span>
@@ -154,26 +154,27 @@ export default function DashboardPage() {
 
       {/* Main Content */}
       <div className="p-6">
-        {/* Stats Grid - ERPNext Style: Large Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+        {/* Stats Grid - GCP Style: Compact Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
           {config.stats.map((stat, index) => {
             const colorClass = getColorClass(stat.color);
             return (
-              <Card key={index} className="border border-gray-200 shadow-md hover:shadow-lg transition-all">
-                <CardContent className="p-6">
-                  <div className="flex items-start justify-between mb-4">
-                    <div>
-                      <p className="text-sm text-gray-600 mb-2">
-                        {stat.label} ({stat.labelEn})
-                      </p>
-                      <h3 className="text-3xl font-semibold text-gray-900">{stat.value}</h3>
-                      <p className={`text-sm font-medium mt-2 ${stat.trendUp ? 'text-green-600' : 'text-red-600'}`}>
-                        {stat.trend} {stat.trendLabel}
-                      </p>
+              <Card key={index} className="border border-gray-200 rounded-sm shadow-sm hover:shadow-md transition-all">
+                <CardContent className="p-4">
+                  <div className="flex justify-between items-start mb-2">
+                    <span className="text-[11px] font-bold text-gray-500 uppercase tracking-wide">
+                      {stat.label} ({stat.labelEn})
+                    </span>
+                    <div className={`w-10 h-10 rounded-lg bg-gradient-to-br ${colorClass.gradient} flex items-center justify-center`}>
+                      {getIcon(stat.icon, "w-5 h-5 text-white")}
                     </div>
-                    <div className={`w-14 h-14 rounded-xl bg-gradient-to-br ${colorClass.gradient} flex items-center justify-center shadow-lg`}>
-                      {getIcon(stat.icon, "w-7 h-7 text-white")}
-                    </div>
+                  </div>
+                  <div className="text-2xl font-normal text-gray-900">{stat.value}</div>
+                  <div className={`mt-2 text-xs flex items-center gap-1 ${stat.trendUp ? 'text-green-700' : 'text-red-700'}`}>
+                    <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={stat.trendUp ? "M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" : "M13 17h8m0 0V9m0 8l-8-8-4 4-6-6"} />
+                    </svg>
+                    <span>{stat.trend} {stat.trendLabel}</span>
                   </div>
                 </CardContent>
               </Card>
@@ -182,43 +183,44 @@ export default function DashboardPage() {
         </div>
 
         {/* Content Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
           {/* Revenue Trend Chart - 2/3 width */}
-          <Card className="lg:col-span-2 border border-gray-200 shadow-md">
-            <div className="px-6 py-4 border-b border-gray-100 flex justify-between items-center">
-              <h3 className="text-base font-semibold text-gray-900">營收趨勢分析</h3>
-              <Link href="/reports" className="text-sm text-blue-600 hover:underline font-medium">
+          <Card className="lg:col-span-2 border border-gray-200 rounded-sm shadow-sm">
+            <div className="px-4 py-3 border-b border-gray-200 flex justify-between items-center">
+              <h3 className="text-sm font-semibold text-gray-900">營收趨勢分析</h3>
+              <Link href="/reports" className="text-xs text-blue-600 hover:underline font-medium">
                 下載報表
               </Link>
             </div>
-            <div className="p-6">
-              <ResponsiveContainer width="100%" height={350}>
+            <div className="p-4">
+              <ResponsiveContainer width="100%" height={300}>
                 <LineChart data={revenueData}>
                   <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
                   <XAxis
                     dataKey="month"
                     stroke="#6b7280"
-                    style={{ fontSize: '12px' }}
+                    style={{ fontSize: '11px' }}
                   />
                   <YAxis
                     stroke="#6b7280"
-                    style={{ fontSize: '12px' }}
+                    style={{ fontSize: '11px' }}
                   />
                   <Tooltip
                     contentStyle={{
                       backgroundColor: '#fff',
                       border: '1px solid #e5e7eb',
-                      borderRadius: '8px',
-                      boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)'
+                      borderRadius: '2px',
+                      boxShadow: '0 1px 2px 0 rgba(60, 64, 67, 0.15)',
+                      fontSize: '12px'
                     }}
                   />
                   <Line
                     type="monotone"
                     dataKey="value"
                     stroke="#3b82f6"
-                    strokeWidth={3}
-                    dot={{ fill: '#3b82f6', r: 4 }}
-                    activeDot={{ r: 6 }}
+                    strokeWidth={2}
+                    dot={{ fill: '#3b82f6', r: 3 }}
+                    activeDot={{ r: 5 }}
                   />
                 </LineChart>
               </ResponsiveContainer>
@@ -228,22 +230,22 @@ export default function DashboardPage() {
           {/* Quick Actions & Notifications - 1/3 width */}
           <div className="space-y-4">
             {/* System Notifications */}
-            <Card className="border border-gray-200 shadow-md">
-              <div className="px-6 py-4 border-b border-gray-100">
-                <h3 className="text-base font-semibold text-gray-900">系統通知</h3>
+            <Card className="border border-gray-200 rounded-sm shadow-sm">
+              <div className="px-4 py-3 border-b border-gray-200">
+                <h3 className="text-sm font-semibold text-gray-900">系統通知</h3>
               </div>
-              <div className="p-6 space-y-4">
+              <div className="p-3 space-y-2">
                 {[
                   { title: 'ERP 系統更新 v2.4.0 已完成', time: '2 小時前', source: '系統管理員' },
                   { title: 'ERP 系統更新 v2.4.0 已完成', time: '2 小時前', source: '系統管理員' },
                   { title: 'ERP 系統更新 v2.4.0 已完成', time: '2 小時前', source: '系統管理員' },
                   { title: 'ERP 系統更新 v2.4.0 已完成', time: '2 小時前', source: '系統管理員' },
                 ].map((notification, i) => (
-                  <div key={i} className="flex items-start gap-3 py-2 hover:bg-gray-50 rounded-lg transition-colors cursor-pointer">
-                    <div className="w-2 h-2 mt-2 rounded-full bg-blue-500 flex-shrink-0" />
+                  <div key={i} className="flex items-start gap-2 p-2 hover:bg-gray-50 rounded-sm transition-colors cursor-pointer">
+                    <div className="w-1.5 h-1.5 mt-1.5 rounded-full bg-blue-500 flex-shrink-0" />
                     <div className="flex-1">
-                      <p className="text-sm font-medium text-gray-900">{notification.title}</p>
-                      <p className="text-xs text-gray-500 mt-1">
+                      <p className="text-xs font-medium text-gray-900">{notification.title}</p>
+                      <p className="text-[10px] text-gray-500 mt-0.5">
                         {notification.time} ‧ {notification.source}
                       </p>
                     </div>
